@@ -107,7 +107,7 @@ class Duplicated(QMainWindow):
                     subprocess.Popen(["explorer", "/select,", filepath.replace("/", "\\")])
 
                 elif platform.system() == "Linux":
-                    subprocess.Popen(["xdg-open", os.path.dirname(filepath)])
+                    subprocess.Popen(["xdg-open", filepath])
 
                 elif platform.system() == "Darwin":
                     subprocess.Popen(["open", "-R", filepath])
