@@ -30,29 +30,43 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.sourcesListWidget)
         self.horizontalLayout = QtWidgets.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
+        spacerItem = QtWidgets.QSpacerItem(
+            40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum
+        )
         self.horizontalLayout.addItem(spacerItem)
         self.addSourceButton = QtWidgets.QPushButton(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.addSourceButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.addSourceButton.sizePolicy().hasHeightForWidth()
+        )
         self.addSourceButton.setSizePolicy(sizePolicy)
         self.addSourceButton.setObjectName("addSourceButton")
         self.horizontalLayout.addWidget(self.addSourceButton)
         self.removeSourceButton = QtWidgets.QPushButton(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.removeSourceButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.removeSourceButton.sizePolicy().hasHeightForWidth()
+        )
         self.removeSourceButton.setSizePolicy(sizePolicy)
         self.removeSourceButton.setObjectName("removeSourceButton")
         self.horizontalLayout.addWidget(self.removeSourceButton)
         self.clearSourceListButton = QtWidgets.QPushButton(self.groupBox)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.clearSourceListButton.sizePolicy().hasHeightForWidth())
+        sizePolicy.setHeightForWidth(
+            self.clearSourceListButton.sizePolicy().hasHeightForWidth()
+        )
         self.clearSourceListButton.setSizePolicy(sizePolicy)
         self.clearSourceListButton.setObjectName("clearSourceListButton")
         self.horizontalLayout.addWidget(self.clearSourceListButton)
@@ -68,7 +82,9 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3.addWidget(self.groupBox_2)
         self.verticalLayout_3.addLayout(self.horizontalLayout_3)
         self.isRecursiveSearchEnabledCheckBox = QtWidgets.QCheckBox(self.centralwidget)
-        self.isRecursiveSearchEnabledCheckBox.setObjectName("isRecursiveSearchEnabledCheckBox")
+        self.isRecursiveSearchEnabledCheckBox.setObjectName(
+            "isRecursiveSearchEnabledCheckBox"
+        )
         self.verticalLayout_3.addWidget(self.isRecursiveSearchEnabledCheckBox)
         self.progressBar = QtWidgets.QProgressBar(self.centralwidget)
         self.progressBar.setProperty("value", 0)
@@ -83,7 +99,9 @@ class Ui_MainWindow(object):
         self.statusLabel.setObjectName("statusLabel")
         self.horizontalLayout_2.addWidget(self.statusLabel)
         self.startButton = QtWidgets.QPushButton(self.centralwidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy = QtWidgets.QSizePolicy(
+            QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed
+        )
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.startButton.sizePolicy().hasHeightForWidth())
@@ -104,6 +122,10 @@ class Ui_MainWindow(object):
         self.removeSourceButton.setText(_translate("MainWindow", "Remove"))
         self.clearSourceListButton.setText(_translate("MainWindow", "Clear"))
         self.groupBox_2.setTitle(_translate("MainWindow", "Duplicates List"))
-        self.duplicatesTreeWidget.headerItem().setText(0, _translate("MainWindow", "Duplicates"))
-        self.isRecursiveSearchEnabledCheckBox.setText(_translate("MainWindow", "Recursive search"))
+        self.duplicatesTreeWidget.headerItem().setText(
+            0, _translate("MainWindow", "Duplicates")
+        )
+        self.isRecursiveSearchEnabledCheckBox.setText(
+            _translate("MainWindow", "Recursive search")
+        )
         self.startButton.setText(_translate("MainWindow", "Start"))

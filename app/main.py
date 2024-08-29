@@ -16,16 +16,14 @@ class FileHasher(QThread):
 
     def __init__(self, sources: List[str], recursive: bool = False):
         super().__init__()
-        self.__sources = sources
 
+        self.__sources = sources
         self.__is_recursive = recursive
 
     def get_files_count(self) -> int:
 
         files_count = 0
-
         for _ in self.list_files():
-
             files_count += 1
 
         return files_count
@@ -33,13 +31,9 @@ class FileHasher(QThread):
     def list_files(self) -> Generator[str, None, None]:
 
         for source in self.__sources:
-
             if self.__is_recursive:
-
                 if self.is_path_valid(source):
-
                     for root, _, filenames in os.walk(source):
-
                         for filename in filenames:
 
                             yield os.path.join(root, filename)
@@ -59,15 +53,17 @@ class FileHasher(QThread):
 
         try:
             with open(filename, "rb") as file:
-
                 while True:
+
                     file_chunk = file.read(1024)
 
                     if not file_chunk:
                         break
 
                     file_hash.update(file_chunk)
+
         finally:
+
             return file_hash.hexdigest()
 
     def run(self):
@@ -86,14 +82,15 @@ class Duplicated(QMainWindow):
         super(Duplicated, self).__init__()
 
         self.duplicates = defaultdict(list)
-
         self.ui = Ui_MainWindow()
 
         self.ui.setupUi(self)
 
         self.ui.addSourceButton.clicked.connect(self.addSourceButtonClicked)
         self.ui.removeSourceButton.clicked.connect(self.removeSourceButtonClicked)
-        self.ui.clearSourceListButton.clicked.connect(self.clearSourcesListButtonClicked)
+        self.ui.clearSourceListButton.clicked.connect(
+            self.clearSourcesListButtonClicked
+        )
         self.ui.startButton.clicked.connect(self.startSearchButtonClicked)
         self.ui.duplicatesTreeWidget.itemDoubleClicked.connect(
             lambda _: self.openPath(self.ui.duplicatesTreeWidget.currentItem().text(0))
@@ -101,17 +98,15 @@ class Duplicated(QMainWindow):
 
     def openPath(self, filepath: str):
 
-            if os.path.exists(filepath):
+        if os.path.exists(filepath):
+            if platform.system() == "Windows":
+                subprocess.Popen(["explorer", "/select,", filepath.replace("/", "\\")])
 
-                if platform.system() == "Windows":
-                    subprocess.Popen(["explorer", "/select,", filepath.replace("/", "\\")])
+            elif platform.system() == "Linux":
+                subprocess.Popen(["xdg-open", filepath])
 
-                elif platform.system() == "Linux":
-                    subprocess.Popen(["xdg-open", filepath])
-
-                elif platform.system() == "Darwin":
-                    subprocess.Popen(["open", "-R", filepath])
-
+            elif platform.system() == "Darwin":
+                subprocess.Popen(["open", "-R", filepath])
 
     def sources(self):
 
@@ -123,9 +118,9 @@ class Duplicated(QMainWindow):
 
         self.duplicates.clear()
 
-        self.fh = FileHasher(sources=[
-            source.text() for source in self.sources()
-        ], recursive=is_recursive)
+        self.fh = FileHasher(
+            sources=[source.text() for source in self.sources()], recursive=is_recursive
+        )
 
         self.fh.file_hashed.connect(self.fileHashed)
         self.fh.hashing_finished.connect(self.hashingFinished)
@@ -141,7 +136,6 @@ class Duplicated(QMainWindow):
 
         self.fh.start()
 
-
     def setControlsEnabled(self, enabled: bool):
         self.ui.startButton.setEnabled(enabled)
         self.ui.addSourceButton.setEnabled(enabled)
@@ -149,11 +143,6 @@ class Duplicated(QMainWindow):
         self.ui.removeSourceButton.setEnabled(enabled)
 
     def isSourceUnique(self, source: str) -> bool:
-        """
-        Checks if the source already exsists in list of sources.
-
-        :return: bool
-        """
 
         for source_item in self.sources():
             if source_item.text() == source:
@@ -164,14 +153,16 @@ class Duplicated(QMainWindow):
     def fileHashed(self, status: str, filepath: str, hash: str):
         self.duplicates[hash].append(filepath)
 
-        self.ui.statusLabel.setText(f"{status}: {self.ui.progressBar.value() + 1}/{self.ui.progressBar.maximum()}")
+        self.ui.statusLabel.setText(
+            f"{status}: {self.ui.progressBar.value() + 1}/{self.ui.progressBar.maximum()}"
+        )
         self.ui.progressBar.setValue(self.ui.progressBar.value() + 1)
 
     def hashingFinished(self, status: str):
 
         self.setControlsEnabled(True)
-        for hash, files in self.duplicates.items():
 
+        for hash, files in self.duplicates.items():
             if len(files) > 1:
 
                 parent_tree_item = QTreeWidgetItem([hash])
@@ -185,14 +176,14 @@ class Duplicated(QMainWindow):
         self.ui.statusLabel.setText(status)
 
     def addSourceButtonClicked(self):
-        """
-        Adds selected directory to the list of sources, where the programm will search for duplicates.
-        """
 
         dialog = QFileDialog()
         dialog.setFileMode(dialog.DirectoryOnly)
+
         if dialog.exec_():
+
             source = dialog.selectedFiles()[0]
+
             if source:
                 if self.isSourceUnique(source=source):
                     self.ui.sourcesListWidget.addItem(source)
