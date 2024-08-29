@@ -42,13 +42,11 @@ class FileHasher(QThread):
 
                         for filename in filenames:
 
-
                             yield os.path.join(root, filename)
 
             else:
-
                 for filename in os.listdir(source):
-                    if os.path.isfile(filename):
+                    if os.path.isfile(os.path.join(source, filename)):
 
                         yield os.path.join(source, filename)
 
@@ -69,9 +67,6 @@ class FileHasher(QThread):
                         break
 
                     file_hash.update(file_chunk)
-        except Exception as ex:
-            print(ex)
-            print(file_hash.hexdigest())
         finally:
             return file_hash.hexdigest()
 
