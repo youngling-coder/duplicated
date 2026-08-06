@@ -1,8 +1,8 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QTreeWidgetItem
-from PyQt5.QtCore import QThread, pyqtSignal
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QTreeWidgetItem
+from PySide6.QtCore import QThread, Signal
 from collections import defaultdict
 from app_ui import Ui_MainWindow
-from typing import List, Generator
+from typing import Generator
 import sys
 import os
 import subprocess
@@ -11,10 +11,10 @@ import hashlib
 
 
 class FileHasher(QThread):
-    file_hashed = pyqtSignal(str, str, str)
-    hashing_finished = pyqtSignal(str)
+    file_hashed = Signal(str, str, str)
+    hashing_finished = Signal(str)
 
-    def __init__(self, sources: List[str], recursive: bool = False):
+    def __init__(self, sources: list[str], recursive: bool = False):
         super().__init__()
 
         self.__sources = sources
@@ -28,20 +28,18 @@ class FileHasher(QThread):
 
         return files_count
 
-    def list_files(self) -> Generator[str, None, None]:
+    def list_files(self) -> Generator[str]:
 
         for source in self.__sources:
             if self.__is_recursive:
                 if self.is_path_valid(source):
                     for root, _, filenames in os.walk(source):
                         for filename in filenames:
-
                             yield os.path.join(root, filename)
 
             else:
                 for filename in os.listdir(source):
                     if os.path.isfile(os.path.join(source, filename)):
-
                         yield os.path.join(source, filename)
 
     def is_path_valid(self, path: str) -> bool:
@@ -54,7 +52,6 @@ class FileHasher(QThread):
         try:
             with open(filename, "rb") as file:
                 while True:
-
                     file_chunk = file.read(1024)
 
                     if not file_chunk:
@@ -63,7 +60,6 @@ class FileHasher(QThread):
                     file_hash.update(file_chunk)
 
         finally:
-
             return file_hash.hexdigest()
 
     def run(self):
@@ -164,11 +160,9 @@ class Duplicated(QMainWindow):
 
         for hash, files in self.duplicates.items():
             if len(files) > 1:
-
                 parent_tree_item = QTreeWidgetItem([hash])
 
                 for file in files:
-
                     parent_tree_item.addChild(QTreeWidgetItem([file]))
 
                 self.ui.duplicatesTreeWidget.addTopLevelItem(parent_tree_item)
@@ -178,15 +172,13 @@ class Duplicated(QMainWindow):
     def addSourceButtonClicked(self):
 
         dialog = QFileDialog()
-        dialog.setFileMode(dialog.DirectoryOnly)
+        dialog.setFileMode(dialog.FileMode.Directory)
 
         if dialog.exec_():
-
             source = dialog.selectedFiles()[0]
 
-            if source:
-                if self.isSourceUnique(source=source):
-                    self.ui.sourcesListWidget.addItem(source)
+            if source and self.isSourceUnique(source=source):
+                self.ui.sourcesListWidget.addItem(source)
 
     def removeSourceButtonClicked(self):
         current_row = self.ui.sourcesListWidget.currentRow()
